@@ -5,6 +5,16 @@ export class Board {
         this.width = width;
         this.height = height;
     }
+    get_board() {
+        return this.board;
+    }
+    clear() {
+        for (let i = 0; i < 10; i++) {
+            for (let j = 0; j < 10; j++) {
+                this.board[i][j] = 0;
+            }
+        }
+    }
     check_adjacent(r, c) {
         const dx = [0, 0, 0, 1, 1, 1, -1, -1, -1];
         const dy = [0, 1, -1, 0, 1, -1, 0, 1, -1];
@@ -55,6 +65,7 @@ export class Board {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
     init_custom(ships) {
+        this.clear();
         let r, c, size, dir;
         for (let ship of ships) {
             [r, c, size, dir] = ship;
@@ -67,6 +78,7 @@ export class Board {
         return true;
     }
     init_random(ships_details) {
+        this.clear();
         let ships = [];
         for (const [size, count] of ships_details) {
             for (let i = 0; i < count; i++) {

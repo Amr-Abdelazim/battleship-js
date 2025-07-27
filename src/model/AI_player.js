@@ -21,7 +21,7 @@ export class AI_player extends Player {
                         let ni = i + dx[k], nj = j + dy[k];
                         if (ni < 0 || ni >= this.board.height || nj < 0 || nj >= this.board.width)
                             continue;
-                        if (this.op_board[i][j] == 1) {
+                        if (this.op_board[ni][nj] == 1) {
                             return [i, j];
                         }
                     }
@@ -31,21 +31,31 @@ export class AI_player extends Player {
         let index = this.#randomInt(0, zeros.length - 1);
         return zeros[index];
     }
+    mark_corners(r, c) {
+        let dx = [1, 1, -1, -1];
+        let dy = [1, -1, 1, -1];
+        for (let k = 0; k < 4; k++) {
+            let nr = r + dx[k], nc = c + dy[k];
+            if (nr >= 0 && nr < this.board.height && nc >= 0 && nc < this.board.width)
+                this.op_board[nr][nc] = 2;
+        }
+    }
     set_attack_result(r, c, feedback) {
         this.op_board[r][c] = 2;// attacked empty cell
         if (feedback.shoot == 0) return;
         this.op_board[r][c] = 1;// attacked ship
+        this.mark_corners(r, c);
         if (feedback.sunk !== null) {
             let size, dir;
             [r, c, size, dir] = feedback.sunk;
             // Horizontal: dir = 0; -- vertical: dir = 1;
             if (dir) {
                 for (let i = r; i < r + size; i++) {
-                    this.board[i][c] = 3;// attacked sunk ship
+                    this.op_board[i][c] = 3;// attacked sunk ship
                 }
             } else {
                 for (let i = c; i < c + size; i++) {
-                    this.board[r][i] = 3;// attacked sunk ship
+                    this.op_board[r][i] = 3;// attacked sunk ship
                 }
             }
         }

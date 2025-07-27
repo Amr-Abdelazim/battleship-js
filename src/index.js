@@ -1,7 +1,11 @@
-import { Board } from "./model/Board";
+import { GameController } from './game_controller';
+import '../public/style.css';
+import { UiController } from './UI_controller';
 
-const board = new Board(10, 10);
-
-const ships = board.init_random([[4, 1], [3, 2], [2, 3], [1, 4]]);
-console.log(ships);
-//board.print();
+document.addEventListener('DOMContentLoaded', () => {
+    const game = new GameController();
+    game.setup();
+    // Just for testing UI
+    // const ui_controller = new UiController();
+    // ui_controller.run();
+});

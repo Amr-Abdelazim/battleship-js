@@ -37,6 +37,9 @@ export class Player {
     is_allSunk() {
         return this.ships.length == 0;
     }
+    remaining_ships() {
+        return this.ships.length;
+    }
 
 
 
